@@ -1,6 +1,16 @@
 import { describe, expect, it } from "vitest";
 
-import { sponsorshipTiers } from "@/components/site";
+import { sponsorshipTiers, teamMembers } from "@/components/site";
+
+describe("Team members", () => {
+  it("lists all 16 members with only their assigned team category", () => {
+    expect(teamMembers).toHaveLength(16);
+    expect(teamMembers.filter((member) => member.category === "Hardware").map((member) => member.name)).toEqual(["Saanvi", "Anaisha", "Nihal", "Saatvik", "Sai", "Pranay"]);
+    expect(teamMembers.filter((member) => member.category === "Software").map((member) => member.name)).toEqual(["Eshaann", "Malav", "Benoit", "Taheem", "Tarun", "Kevin"]);
+    expect(teamMembers.filter((member) => member.category === "Outreach").map((member) => member.name)).toEqual(["Evan", "Ethan", "Daiwik", "Srivanth"]);
+    expect(teamMembers.every((member) => !("bio" in member))).toBe(true);
+  });
+});
 
 describe("Sponsorship tiers", () => {
   it("offers Orange from $99–299 with website and social media logos", () => {

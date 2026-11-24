@@ -2,6 +2,23 @@ import { Link } from "@tanstack/react-router";
 import type { ReactNode } from "react";
 import { Check, Heart, Users, Lightbulb, Target, Mail, MapPin, ChevronDown } from "lucide-react";
 
+import saanviPhoto from "@/assets/team/saanvi.png.asset.json";
+import anaishaPhoto from "@/assets/team/anaisha.png.asset.json";
+import nihalPhoto from "@/assets/team/nihal.png.asset.json";
+import saatvikPhoto from "@/assets/team/saatvik.png.asset.json";
+import saiPhoto from "@/assets/team/sai.png.asset.json";
+import pranayPhoto from "@/assets/team/pranay.png.asset.json";
+import eshaannPhoto from "@/assets/team/eshaann.png.asset.json";
+import malavPhoto from "@/assets/team/malav.png.asset.json";
+import benoitPhoto from "@/assets/team/benoit.png.asset.json";
+import taheemPhoto from "@/assets/team/taheem.png.asset.json";
+import tarunPhoto from "@/assets/team/tarun.png.asset.json";
+import kevinPhoto from "@/assets/team/kevin.png.asset.json";
+import evanPhoto from "@/assets/team/evan.png.asset.json";
+import ethanPhoto from "@/assets/team/ethan.png.asset.json";
+import daiwikPhoto from "@/assets/team/daiwik.png.asset.json";
+import srivanthPhoto from "@/assets/team/srivanth.png.asset.json";
+
 const nav = [
   { to: "/", hash: "about", label: "About" },
   { to: "/", hash: "robot", label: "Robot" },
@@ -227,24 +244,84 @@ export function Sponsorship() {
   );
 }
 
+export const teamMembers = [
+  { name: "Saanvi", category: "Hardware", photo: saanviPhoto.url, x: 170, y: 100, labelSide: "left" },
+  { name: "Anaisha", category: "Hardware", photo: anaishaPhoto.url, x: 230, y: 200, labelSide: "left" },
+  { name: "Nihal", category: "Hardware", photo: nihalPhoto.url, x: 290, y: 300, labelSide: "left" },
+  { name: "Saatvik", category: "Hardware", photo: saatvikPhoto.url, x: 350, y: 400, labelSide: "left" },
+  { name: "Sai", category: "Hardware", photo: saiPhoto.url, x: 410, y: 500, labelSide: "left" },
+  { name: "Pranay", category: "Hardware", photo: pranayPhoto.url, x: 460, y: 600, labelSide: "left" },
+  { name: "Eshaann", category: "Software", photo: eshaannPhoto.url, x: 830, y: 100, labelSide: "right" },
+  { name: "Malav", category: "Software", photo: malavPhoto.url, x: 770, y: 200, labelSide: "right" },
+  { name: "Benoit", category: "Software", photo: benoitPhoto.url, x: 710, y: 300, labelSide: "right" },
+  { name: "Taheem", category: "Software", photo: taheemPhoto.url, x: 650, y: 400, labelSide: "right" },
+  { name: "Tarun", category: "Software", photo: tarunPhoto.url, x: 590, y: 500, labelSide: "right" },
+  { name: "Kevin", category: "Software", photo: kevinPhoto.url, x: 540, y: 600, labelSide: "right" },
+  { name: "Evan", category: "Outreach", photo: evanPhoto.url, x: 500, y: 740, labelSide: "right" },
+  { name: "Ethan", category: "Outreach", photo: ethanPhoto.url, x: 500, y: 900, labelSide: "left" },
+  { name: "Daiwik", category: "Outreach", photo: daiwikPhoto.url, x: 500, y: 1060, labelSide: "right" },
+  { name: "Srivanth", category: "Outreach", photo: srivanthPhoto.url, x: 500, y: 1220, labelSide: "left" },
+] as const;
+
 export function Team() {
-  const members = [
-    { n: "Alex", b: "Hi, I'm Alex! I'm our lead builder. I joined FTC because I love figuring out how machines work. In my free time I play soccer." },
-    { n: "Priya", b: "Hi, I'm Priya! I write our autonomous code in Java. Outside robotics I enjoy chess and drawing." },
-    { n: "Jordan", b: "I'm Jordan, our CAD designer. I joined to turn ideas into real parts. I also play guitar and video games." },
-    { n: "Maya", b: "I'm Maya and I lead outreach. I love sharing STEM with younger kids. In my free time I read and swim." },
-    { n: "Ethan", b: "I'm Ethan, our driver. I joined FTC for the thrill of competition. I also enjoy basketball and hiking." },
-    { n: "Sara", b: "I'm Sara and I manage our engineering notebook. I enjoy writing, baking, and spending time with friends." },
-  ];
   return (
     <Section alt>
-      <SectionHead title="Meet the" accent="Team" sub="Get to know the passionate individuals who make up our robotics team." />
-      <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-        {members.map((m) => (
-          <div key={m.n} className="space-y-4">
-            <div className="rounded-2xl bg-card p-4 shadow-md"><div className="flex aspect-square items-center justify-center rounded-xl bg-muted font-display text-5xl text-glow">{m.n[0]}</div></div>
-            <h3 className="text-center font-display text-xl font-bold">{m.n}</h3>
-            <p className="rounded-2xl bg-primary p-6 text-primary-foreground shadow-md">{m.b}</p>
+      <div className="mx-auto mb-4 max-w-2xl text-center">
+        <p className="mb-2 text-sm font-semibold uppercase tracking-widest text-glow">Our people</p>
+        <h2 className="font-display text-4xl font-bold md:text-5xl">Meet the <span className="text-glow">Team</span></h2>
+      </div>
+
+      <div className="mx-auto hidden w-full max-w-5xl md:block">
+        <svg viewBox="-10 0 1020 1320" className="h-auto w-full" role="img" aria-labelledby="team-shape-title team-shape-description">
+          <title id="team-shape-title">Slingshot #20240 team members</title>
+          <desc id="team-shape-description">Hardware and Software members form the two arms of a slingshot, with Outreach members along its handle.</desc>
+          <defs>
+            <clipPath id="team-portrait-clip" clipPathUnits="userSpaceOnUse"><circle r="62" /></clipPath>
+          </defs>
+          <path
+            d="M170 100 L460 600 L500 670 L540 600 L830 100 M500 670 L500 1220"
+            fill="none"
+            stroke="var(--primary)"
+            strokeWidth="10"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            opacity="0.55"
+          />
+          <text x="500" y="300" textAnchor="middle" className="fill-foreground font-display text-[42px] font-black tracking-wide">SLINGSHOT</text>
+          <text x="500" y="340" textAnchor="middle" className="fill-glow font-display text-[22px] font-bold">#20240</text>
+          {teamMembers.map((member) => {
+            const labelX = member.labelSide === "left" ? -84 : 84;
+            const labelAnchor = member.labelSide === "left" ? "end" : "start";
+            return (
+              <g key={member.name} transform={`translate(${member.x} ${member.y})`}>
+                <title>{`${member.name} — ${member.category}`}</title>
+                <circle r="69" fill="var(--card)" />
+                <image
+                  href={member.photo}
+                  x="-62"
+                  y="-62"
+                  width="124"
+                  height="124"
+                  clipPath="url(#team-portrait-clip)"
+                  preserveAspectRatio="xMidYMid slice"
+                />
+                <circle r="62" fill="none" stroke="var(--glow)" strokeWidth="5" />
+                <text x={labelX} y="-4" textAnchor={labelAnchor} className="fill-foreground font-display text-[23px] font-bold">{member.name}</text>
+                <text x={labelX} y="23" textAnchor={labelAnchor} className="fill-glow font-sans text-[14px] font-semibold uppercase tracking-[2px]">{member.category}</text>
+              </g>
+            );
+          })}
+        </svg>
+      </div>
+
+      <div className="grid grid-cols-2 gap-x-5 gap-y-9 pt-10 min-[420px]:grid-cols-3 md:hidden">
+        {teamMembers.map((member) => (
+          <div key={member.name} className="flex flex-col items-center text-center">
+            <div className="h-24 w-24 overflow-hidden rounded-full border-4 border-glow bg-card shadow-md min-[420px]:h-28 min-[420px]:w-28">
+              <img src={member.photo} alt={member.name} className="h-full w-full object-cover" />
+            </div>
+            <h3 className="mt-3 font-display text-base font-bold">{member.name}</h3>
+            <p className="mt-1 text-xs font-semibold uppercase tracking-widest text-glow">{member.category}</p>
           </div>
         ))}
       </div>
