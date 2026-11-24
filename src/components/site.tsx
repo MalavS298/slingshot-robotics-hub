@@ -1,15 +1,15 @@
 import { Link } from "@tanstack/react-router";
 import type { ReactNode } from "react";
-import { Heart, Users, Lightbulb, Target, Mail, MapPin, ChevronDown } from "lucide-react";
+import { Check, Heart, Users, Lightbulb, Target, Mail, MapPin, ChevronDown } from "lucide-react";
 
 const nav = [
-  { to: "/about", label: "About" },
-  { to: "/robot", label: "Robot" },
-  { to: "/past-seasons", label: "Past Seasons" },
-  { to: "/outreach", label: "Outreach" },
-  { to: "/sponsorship", label: "Sponsorship" },
-  { to: "/team", label: "Team" },
-  { to: "/contact", label: "Contact" },
+  { to: "/", hash: "about", label: "About" },
+  { to: "/", hash: "robot", label: "Robot" },
+  { to: "/past-seasons", hash: "", label: "Past Seasons" },
+  { to: "/outreach", hash: "", label: "Outreach" },
+  { to: "/sponsorship", hash: "", label: "Sponsorship" },
+  { to: "/team", hash: "", label: "Team" },
+  { to: "/", hash: "contact", label: "Contact" },
 ] as const;
 
 export function Header() {
@@ -20,9 +20,16 @@ export function Header() {
           <span className="font-display text-xl font-bold text-primary-foreground">Slingshot</span>
           <span className="text-xs text-primary-foreground/70">#20240</span>
         </Link>
-        <nav className="flex flex-wrap gap-x-5 gap-y-1 text-sm">
+        <nav className="flex flex-wrap gap-x-5 gap-y-1 text-sm" aria-label="Main navigation">
           {nav.map((n) => (
-            <Link key={n.to} to={n.to} className="text-primary-foreground/80 hover:text-primary-foreground" activeProps={{ className: "font-semibold underline underline-offset-8 decoration-2" }}>
+            <Link
+              key={n.label}
+              to={n.to}
+              hash={n.hash}
+              className="text-primary-foreground/80 hover:text-primary-foreground"
+              activeProps={{ className: "font-semibold text-primary-foreground underline underline-offset-8 decoration-2" }}
+              activeOptions={{ exact: true, includeHash: true }}
+            >
               {n.label}
             </Link>
           ))}
@@ -53,8 +60,8 @@ export function SectionHead({ eyebrow, title, accent, sub }: { eyebrow?: string;
   );
 }
 
-function Section({ children, alt }: { children: ReactNode; alt?: boolean }) {
-  return <section className={`px-4 py-20 ${alt ? "bg-secondary" : "bg-background"}`}><div className="mx-auto max-w-6xl">{children}</div></section>;
+function Section({ children, alt, id }: { children: ReactNode; alt?: boolean; id?: string }) {
+  return <section id={id} className={`scroll-mt-28 px-4 py-20 ${alt ? "bg-secondary" : "bg-background"}`}><div className="mx-auto max-w-6xl">{children}</div></section>;
 }
 
 export function Hero() {
@@ -68,10 +75,10 @@ export function Hero() {
         <p className="mx-auto mt-6 max-w-xl text-lg opacity-90">Launching ideas into reality. We're a passionate team dedicated to innovation, teamwork, and having fun!</p>
         <div className="mt-8 flex justify-center gap-4">
           <Link to="/team" className="rounded-lg bg-accent px-6 py-3 font-semibold text-accent-foreground shadow hover:opacity-90">Meet The Team</Link>
-          <Link to="/robot" className="rounded-lg bg-accent px-6 py-3 font-semibold text-accent-foreground shadow hover:opacity-90">Our Robot</Link>
+          <Link to="/" hash="robot" className="rounded-lg bg-accent px-6 py-3 font-semibold text-accent-foreground shadow hover:opacity-90">Our Robot</Link>
         </div>
       </div>
-      <Link to="/about" className="absolute bottom-6 flex flex-col items-center text-sm opacity-80">Learn More<ChevronDown className="h-4 w-4" /></Link>
+      <Link to="/" hash="about" className="absolute bottom-6 flex flex-col items-center text-sm opacity-80">Learn More<ChevronDown className="h-4 w-4" /></Link>
     </section>
   );
 }
@@ -85,12 +92,12 @@ const values = [
 
 export function About() {
   return (
-    <Section alt>
+    <Section id="about" alt>
       <SectionHead eyebrow="Who we are" title="About Slingshot" sub="We're a FIRST Tech Challenge team building robots and having fun while giving back to our community." />
       <div className="grid items-center gap-8 rounded-2xl bg-card p-8 shadow-md md:grid-cols-2">
         <div className="space-y-4">
           <h3 className="font-display text-2xl font-bold">Our Story</h3>
-          <p>Slingshot started with a group of friends who loved building things and wanted a bigger challenge. What began as tinkering quickly turned into a shared passion for engineering, programming, and problem-solving.</p>
+          <p>We are a high school team from Westwood who build robots with a shared passion for engineering, programming, and problem-solving.</p>
           <p>United by curiosity and teamwork, we now take on tougher challenges each season and push each other to grow.</p>
         </div>
         <div className="flex flex-col items-center justify-center rounded-xl bg-hero py-12 text-primary-foreground">
@@ -135,7 +142,7 @@ function RobotCard({ season, desc, size, weight, features }: { season: string; d
 
 export function Robot() {
   return (
-    <Section>
+    <Section id="robot">
       <SectionHead eyebrow="Our creation" title="Meet Our Robot" sub="Hours of design, building, and testing go into creating our competition robot each season." />
       <RobotCard season="2025-2026" desc="Our robot is designed for the DECODE challenge, featuring specialized mechanisms for quick intake and launching cycles." size={'18"'} weight="30 lbs" features={["Efficient intake", "Shooting from near and far zones", "Fast scoring cycles", "Reliable autonomous code"]} />
     </Section>
@@ -177,26 +184,45 @@ export function Outreach() {
   );
 }
 
+const sponsorBenefits = ["Logo on website", "Logo on social media", "Logo on shirt & displays", "Logo on robot"];
+
+export const sponsorshipTiers = [
+  { name: "Orange", price: "$99–299", benefits: [true, true, false, false] },
+  { name: "Silver", price: "$300–699", benefits: [true, true, true, false] },
+  { name: "Amethyst", price: "$700+", benefits: [true, true, true, true] },
+] as const;
+
 export function Sponsorship() {
-  const tiers = [
-    { n: "Bronze", p: "$250+", l: ["Logo on team website", "Social media recognition", "Thank you certificate"] },
-    { n: "Silver", p: "$500+", l: ["All Bronze benefits", "Logo on team banner", "Quarterly team updates", "Invitation to team events"] },
-    { n: "Gold", p: "$1,000+", l: ["All Silver benefits", "Logo on team shirts", "Priority recognition at events", "Personalized thank you video"] },
-    { n: "Platinum", p: "$2,500+", l: ["All Gold benefits", "Logo on robot", "Featured sponsor spotlight", "Annual impact report"] },
-  ];
   return (
     <Section alt>
       <SectionHead title="Become a" accent="Sponsor" sub="Your support helps us compete, learn, and inspire the next generation of engineers and innovators." />
-      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-        {tiers.map((t) => (
-          <div key={t.n} className="space-y-4">
-            <div className="rounded-2xl bg-card py-12 text-center font-display text-3xl font-bold text-glow shadow-md">{t.p}</div>
-            <h3 className="text-center font-display text-xl font-bold">{t.n}</h3>
-            <OrangeList items={t.l} />
-          </div>
-        ))}
+      <div className="overflow-x-auto rounded-2xl bg-card shadow-md">
+        <table className="w-full min-w-[720px] border-collapse text-left">
+          <caption className="sr-only">Sponsorship tiers and included logo placement benefits</caption>
+          <thead>
+            <tr className="bg-primary text-primary-foreground">
+              <th scope="col" className="p-5 font-display text-lg">Sponsorship tier</th>
+              {sponsorBenefits.map((benefit) => <th key={benefit} scope="col" className="p-5 text-center text-sm font-semibold">{benefit}</th>)}
+            </tr>
+          </thead>
+          <tbody>
+            {sponsorshipTiers.map((tier) => (
+              <tr key={tier.name} className="border-t border-primary-foreground/15">
+                <th scope="row" className="p-6">
+                  <span className="font-display text-2xl font-bold">{tier.name}</span>
+                  <span className="mt-1 block text-sm font-semibold text-glow">{tier.price}</span>
+                </th>
+                {tier.benefits.map((included, index) => (
+                  <td key={sponsorBenefits[index]} className="p-6 text-center">
+                    {included ? <><Check className="mx-auto h-7 w-7 text-glow" aria-hidden="true" /><span className="sr-only">Included</span></> : <span aria-label="Not included">—</span>}
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
-      <div className="mt-12 text-center"><Link to="/contact" className="rounded-lg bg-primary px-6 py-3 font-semibold text-primary-foreground shadow hover:opacity-90">Contact Us to Sponsor</Link></div>
+      <div className="mt-12 text-center"><Link to="/" hash="contact" className="rounded-lg bg-primary px-6 py-3 font-semibold text-primary-foreground shadow hover:opacity-90">Contact Us to Sponsor</Link></div>
     </Section>
   );
 }
@@ -228,14 +254,14 @@ export function Team() {
 
 export function Contact() {
   return (
-    <Section>
-      <SectionHead eyebrow="Get in touch" title="Join Our Team!" sub="Want to join Slingshot, become a sponsor, or just say hi? We'd love to hear from you!" />
+    <Section id="contact">
+      <SectionHead eyebrow="Get in touch" title="Contact Slingshot" sub="Interested in sponsoring us or just want to say hi? We'd love to hear from you!" />
       <div className="mx-auto grid max-w-4xl gap-6 md:grid-cols-2">
         <div className="rounded-2xl bg-card p-8 shadow-md">
           <h3 className="font-display text-xl font-bold">Contact Info</h3>
           <div className="mt-6 space-y-5">
-            <div className="flex gap-4"><div className="flex h-10 w-10 items-center justify-center rounded-lg bg-accent text-accent-foreground"><Mail className="h-5 w-5" /></div><div><p className="text-sm text-muted-foreground">Email</p><a href="mailto:contact@slingshot20240.com" className="font-medium">contact@slingshot20240.com</a></div></div>
-            <div className="flex gap-4"><div className="flex h-10 w-10 items-center justify-center rounded-lg bg-accent text-accent-foreground"><MapPin className="h-5 w-5" /></div><div><p className="text-sm text-muted-foreground">Location</p><p className="font-medium">Your City, State</p></div></div>
+            <div className="flex gap-4"><div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-accent text-accent-foreground"><Mail className="h-5 w-5" /></div><div className="min-w-0"><p className="text-sm text-muted-foreground">Email</p><a href="mailto:slingshotftc@gmail.com" className="break-all font-medium">slingshotftc@gmail.com</a></div></div>
+            <div className="flex gap-4"><div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-accent text-accent-foreground"><MapPin className="h-5 w-5" /></div><div><p className="text-sm text-muted-foreground">Location</p><p className="font-medium">Austin, Texas</p></div></div>
           </div>
           <hr className="my-6" />
           <p className="text-sm text-muted-foreground">Follow Us</p>
