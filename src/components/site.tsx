@@ -14,15 +14,15 @@ const nav = [
 
 export function Header() {
   return (
-    <header className="sticky top-0 z-50 border-b border-border bg-card/90 backdrop-blur">
+    <header className="sticky top-0 z-50 border-b border-primary-foreground/15 bg-primary/95 backdrop-blur">
       <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-4 py-3">
         <Link to="/" className="flex items-baseline gap-2">
-          <span className="font-display text-xl font-bold text-primary">Slingshot</span>
-          <span className="text-xs text-muted-foreground">#20240</span>
+          <span className="font-display text-xl font-bold text-primary-foreground">Slingshot</span>
+          <span className="text-xs text-primary-foreground/70">#20240</span>
         </Link>
         <nav className="flex flex-wrap gap-x-5 gap-y-1 text-sm">
           {nav.map((n) => (
-            <Link key={n.to} to={n.to} className="text-foreground hover:text-primary" activeProps={{ className: "text-primary font-semibold" }}>
+            <Link key={n.to} to={n.to} className="text-primary-foreground/80 hover:text-primary-foreground" activeProps={{ className: "font-semibold underline underline-offset-8 decoration-2" }}>
               {n.label}
             </Link>
           ))}
@@ -44,9 +44,9 @@ export function Footer() {
 export function SectionHead({ eyebrow, title, accent, sub }: { eyebrow?: string; title: string; accent?: string; sub: string }) {
   return (
     <div className="mx-auto mb-12 max-w-2xl text-center">
-      {eyebrow && <p className="mb-2 text-sm font-semibold uppercase tracking-widest text-primary">{eyebrow}</p>}
+      {eyebrow && <p className="mb-2 text-sm font-semibold uppercase tracking-widest text-glow">{eyebrow}</p>}
       <h2 className="font-display text-4xl font-bold md:text-5xl">
-        {title} {accent && <span className="text-primary">{accent}</span>}
+        {title} {accent && <span className="text-glow">{accent}</span>}
       </h2>
       <p className="mt-4 text-lg text-muted-foreground">{sub}</p>
     </div>
@@ -67,8 +67,8 @@ export function Hero() {
         <p className="mt-2 font-display text-3xl font-bold opacity-90">#20240</p>
         <p className="mx-auto mt-6 max-w-xl text-lg opacity-90">Launching ideas into reality. We're a passionate team dedicated to innovation, teamwork, and having fun!</p>
         <div className="mt-8 flex justify-center gap-4">
-          <Link to="/team" className="rounded-lg bg-card px-6 py-3 font-semibold text-primary shadow hover:opacity-90">Meet The Team</Link>
-          <Link to="/robot" className="rounded-lg bg-card px-6 py-3 font-semibold text-primary shadow hover:opacity-90">Our Robot</Link>
+          <Link to="/team" className="rounded-lg bg-accent px-6 py-3 font-semibold text-accent-foreground shadow hover:opacity-90">Meet The Team</Link>
+          <Link to="/robot" className="rounded-lg bg-accent px-6 py-3 font-semibold text-accent-foreground shadow hover:opacity-90">Our Robot</Link>
         </div>
       </div>
       <Link to="/about" className="absolute bottom-6 flex flex-col items-center text-sm opacity-80">Learn More<ChevronDown className="h-4 w-4" /></Link>
@@ -93,7 +93,7 @@ export function About() {
           <p>Slingshot started with a group of friends who loved building things and wanted a bigger challenge. What began as tinkering quickly turned into a shared passion for engineering, programming, and problem-solving.</p>
           <p>United by curiosity and teamwork, we now take on tougher challenges each season and push each other to grow.</p>
         </div>
-        <div className="flex flex-col items-center justify-center rounded-xl bg-accent py-12 text-accent-foreground">
+        <div className="flex flex-col items-center justify-center rounded-xl bg-hero py-12 text-primary-foreground">
           <span className="font-display text-6xl">⟟</span>
           <p className="mt-3 font-display text-xl font-bold">Aim High. Launch Far.</p>
           <p className="text-sm">Team #20240</p>
@@ -102,7 +102,7 @@ export function About() {
       <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
         {values.map((v) => (
           <div key={v.t} className="rounded-2xl bg-card p-6 text-center shadow-md">
-            <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-xl bg-accent text-primary"><v.icon /></div>
+            <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-xl bg-accent text-accent-foreground"><v.icon /></div>
             <h4 className="mt-4 font-display text-lg font-bold">{v.t}</h4>
             <p className="mt-2 text-sm text-muted-foreground">{v.d}</p>
           </div>
@@ -121,8 +121,8 @@ function RobotCard({ season, desc, size, weight, features }: { season: string; d
       <div className="flex flex-col justify-center gap-5">
         <div className="rounded-2xl bg-card p-6 shadow-md"><h3 className="font-display text-xl font-bold">Season {season}</h3><p className="mt-2">{desc}</p></div>
         <div className="grid grid-cols-2 gap-5">
-          <div className="rounded-2xl bg-card p-6 text-center shadow-md"><p className="font-display text-3xl font-bold text-primary">{size}</p><p className="text-sm">Max Size</p></div>
-          <div className="rounded-2xl bg-card p-6 text-center shadow-md"><p className="font-display text-3xl font-bold text-primary">{weight}</p><p className="text-sm">Weight</p></div>
+          <div className="rounded-2xl bg-card p-6 text-center shadow-md"><p className="font-display text-3xl font-bold text-glow">{size}</p><p className="text-sm">Max Size</p></div>
+          <div className="rounded-2xl bg-card p-6 text-center shadow-md"><p className="font-display text-3xl font-bold text-glow">{weight}</p><p className="text-sm">Weight</p></div>
         </div>
         <div className="rounded-2xl bg-primary p-6 text-primary-foreground shadow-md">
           <h4 className="font-display text-xl font-bold">Key Features</h4>
@@ -190,7 +190,7 @@ export function Sponsorship() {
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
         {tiers.map((t) => (
           <div key={t.n} className="space-y-4">
-            <div className="rounded-2xl bg-card py-12 text-center font-display text-3xl font-bold text-primary shadow-md">{t.p}</div>
+            <div className="rounded-2xl bg-card py-12 text-center font-display text-3xl font-bold text-glow shadow-md">{t.p}</div>
             <h3 className="text-center font-display text-xl font-bold">{t.n}</h3>
             <OrangeList items={t.l} />
           </div>
@@ -216,7 +216,7 @@ export function Team() {
       <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
         {members.map((m) => (
           <div key={m.n} className="space-y-4">
-            <div className="rounded-2xl bg-card p-4 shadow-md"><div className="flex aspect-square items-center justify-center rounded-xl bg-muted font-display text-5xl text-primary">{m.n[0]}</div></div>
+            <div className="rounded-2xl bg-card p-4 shadow-md"><div className="flex aspect-square items-center justify-center rounded-xl bg-muted font-display text-5xl text-glow">{m.n[0]}</div></div>
             <h3 className="text-center font-display text-xl font-bold">{m.n}</h3>
             <p className="rounded-2xl bg-primary p-6 text-primary-foreground shadow-md">{m.b}</p>
           </div>
@@ -234,20 +234,20 @@ export function Contact() {
         <div className="rounded-2xl bg-card p-8 shadow-md">
           <h3 className="font-display text-xl font-bold">Contact Info</h3>
           <div className="mt-6 space-y-5">
-            <div className="flex gap-4"><div className="flex h-10 w-10 items-center justify-center rounded-lg bg-accent text-primary"><Mail className="h-5 w-5" /></div><div><p className="text-sm text-muted-foreground">Email</p><a href="mailto:contact@slingshot20240.com" className="font-medium">contact@slingshot20240.com</a></div></div>
-            <div className="flex gap-4"><div className="flex h-10 w-10 items-center justify-center rounded-lg bg-accent text-primary"><MapPin className="h-5 w-5" /></div><div><p className="text-sm text-muted-foreground">Location</p><p className="font-medium">Your City, State</p></div></div>
+            <div className="flex gap-4"><div className="flex h-10 w-10 items-center justify-center rounded-lg bg-accent text-accent-foreground"><Mail className="h-5 w-5" /></div><div><p className="text-sm text-muted-foreground">Email</p><a href="mailto:contact@slingshot20240.com" className="font-medium">contact@slingshot20240.com</a></div></div>
+            <div className="flex gap-4"><div className="flex h-10 w-10 items-center justify-center rounded-lg bg-accent text-accent-foreground"><MapPin className="h-5 w-5" /></div><div><p className="text-sm text-muted-foreground">Location</p><p className="font-medium">Your City, State</p></div></div>
           </div>
           <hr className="my-6" />
           <p className="text-sm text-muted-foreground">Follow Us</p>
           <div className="mt-3 flex gap-3">
-            <a href="https://ftcscout.org/teams/20240" target="_blank" rel="noreferrer" className="rounded-lg bg-secondary px-3 py-2 text-sm hover:bg-accent">FTC Scout</a>
-            <a href="https://www.firstinspires.org" target="_blank" rel="noreferrer" className="rounded-lg bg-secondary px-3 py-2 text-sm hover:bg-accent">FIRST Inspires</a>
+            <a href="https://ftcscout.org/teams/20240" target="_blank" rel="noreferrer" className="rounded-lg bg-muted px-3 py-2 text-sm text-foreground hover:bg-glow hover:text-accent-foreground">FTC Scout</a>
+            <a href="https://www.firstinspires.org" target="_blank" rel="noreferrer" className="rounded-lg bg-muted px-3 py-2 text-sm text-foreground hover:bg-glow hover:text-accent-foreground">FIRST Inspires</a>
           </div>
         </div>
         <div className="flex flex-col justify-center rounded-2xl bg-primary p-8 text-primary-foreground shadow-md">
           <h3 className="font-display text-2xl font-bold">Become a Sponsor</h3>
           <p className="mt-3 opacity-90">Help us compete and inspire the next generation of engineers! Your support makes a real difference in our team's ability to innovate and succeed.</p>
-          <Link to="/sponsorship" className="mt-6 rounded-lg bg-card py-3 text-center font-semibold text-primary hover:opacity-90">Sponsorship Info</Link>
+          <Link to="/sponsorship" className="mt-6 rounded-lg bg-accent py-3 text-center font-semibold text-accent-foreground hover:opacity-90">Sponsorship Info</Link>
         </div>
       </div>
     </Section>
