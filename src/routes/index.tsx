@@ -1,23 +1,18 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { Hero, About, Robot, Contact } from "@/components/site";
 
-// The home route ships no og:image, so serve-time hosting can inject the
-// project's social preview (explicit og:image or latest screenshot).
 export const Route = createFileRoute("/")({
+  head: () => ({
+    meta: [
+      { title: "Slingshot #20240 | FTC Robotics Team" },
+      { name: "description", content: "Slingshot #20240 is a FIRST Tech Challenge robotics team building robots and inspiring our community." },
+      { property: "og:title", content: "Slingshot #20240 | FTC Robotics Team" },
+      { property: "og:description", content: "Slingshot #20240 is a FIRST Tech Challenge robotics team building robots and inspiring our community." },
+    ],
+  }),
   component: Index,
 });
 
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
 function Index() {
-  return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
-    </div>
-  );
+  return (<><Hero /><About /><Robot /><Contact /></>);
 }
