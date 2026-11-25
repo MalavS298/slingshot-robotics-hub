@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import type { ReactNode } from "react";
 import { Check, Heart, Users, Lightbulb, Target, Mail, MapPin, ChevronDown } from "lucide-react";
+import { RobotExplorer } from "@/components/robot-explorer";
 
 import saanviPhoto from "@/assets/team/saanvi.png.asset.json";
 import anaishaPhoto from "@/assets/team/anaisha.png.asset.json";
@@ -160,8 +161,8 @@ function RobotCard({ season, desc, size, weight, features }: { season: string; d
 export function Robot() {
   return (
     <Section id="robot">
-      <SectionHead eyebrow="Our creation" title="Meet Our Robot" sub="Hours of design, building, and testing go into creating our competition robot each season." />
-      <RobotCard season="2025-2026" desc="Our robot is designed for the DECODE challenge, featuring specialized mechanisms for quick intake and launching cycles." size={'18"'} weight="30 lbs" features={["Efficient intake", "Shooting from near and far zones", "Fast scoring cycles", "Reliable autonomous code"]} />
+      <SectionHead eyebrow="Inside the machine" title="Meet Our Robot" sub="Explore our DECODE competition robot. Drag the assembly to see every angle, then select a marker to discover its systems." />
+      <RobotExplorer />
     </Section>
   );
 }

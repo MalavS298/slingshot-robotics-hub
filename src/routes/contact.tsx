@@ -8,6 +8,8 @@ export const Route = createFileRoute("/contact")({
       { name: "description", content: "Get in touch with Slingshot #20240 to sponsor our team or say hi." },
       { property: "og:title", content: "Contact | Slingshot FTC #20240" },
       { property: "og:description", content: "Get in touch with Slingshot #20240 to sponsor our team or say hi." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: Contact,

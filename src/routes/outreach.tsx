@@ -8,6 +8,8 @@ export const Route = createFileRoute("/outreach")({
       { name: "description", content: "How Slingshot #20240 inspires young innovators through STEM outreach." },
       { property: "og:title", content: "Outreach | Slingshot FTC #20240" },
       { property: "og:description", content: "How Slingshot #20240 inspires young innovators through STEM outreach." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: Outreach,

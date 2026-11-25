@@ -176,3 +176,37 @@
   background-image: linear-gradient(var(--primary-foreground) 1px, transparent 1px), linear-gradient(90deg, var(--primary-foreground) 1px, transparent 1px);
   background-size: 48px 48px;
 }
+
+.robot-stage {
+  cursor: grab;
+  background:
+    radial-gradient(circle at 52% 46%, color-mix(in oklab, var(--primary) 20%, transparent), transparent 44%),
+    radial-gradient(circle at 50% 82%, color-mix(in oklab, var(--glow) 9%, transparent), transparent 35%),
+    var(--popover);
+}
+
+.robot-stage:active {
+  cursor: grabbing;
+}
+
+.robot-blueprint {
+  background-image:
+    linear-gradient(color-mix(in oklab, var(--primary) 20%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in oklab, var(--primary) 20%, transparent) 1px, transparent 1px);
+  background-size: 44px 44px;
+  mask-image: radial-gradient(circle at center, var(--foreground), transparent 76%);
+}
+
+.robot-orbit-ring {
+  box-shadow: 0 0 70px color-mix(in oklab, var(--primary) 20%, transparent);
+  transform: translateX(-50%) rotateX(68deg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .robot-stage *,
+  .robot-stage *::before,
+  .robot-stage *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
