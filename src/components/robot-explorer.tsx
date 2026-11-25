@@ -10,40 +10,34 @@ import underside from "@/assets/robot-underside.webp.asset.json";
 
 const features = [
   {
-    id: "launcher",
-    name: "Dual Flywheel Launcher",
-    short: "Launcher",
-    description: "Two powered flywheels accelerate game pieces through the guided barrel, creating a compact and direct scoring path.",
+    id: "drivetrain",
+    name: "Mecanum Drivetrain",
+    short: "Mecanum",
+    description: "Mecanum wheels power the robot's driving.",
   },
   {
     id: "turret",
-    name: "Rotating Turret",
+    name: "Turret",
     short: "Turret",
-    description: "A geared rotating base turns the launcher independently, so the robot can adjust its aim without moving the entire chassis.",
+    description: "The turret carries the robot's scoring mechanism.",
+  },
+  {
+    id: "ramp",
+    name: "Deployable Ramp",
+    short: "Ramp",
+    description: "Deployable ramp to intake from flowers.",
+  },
+  {
+    id: "butterfly",
+    name: "Butterfly Drivetrain",
+    short: "Butterfly",
+    description: "Butterfly drivetrain, also on the bottom.",
   },
   {
     id: "intake",
-    name: "Powered Intake",
+    name: "Intake + Transfer",
     short: "Intake",
-    description: "A wide roller system gathers game pieces and guides them through the chassis toward the launcher for quick, repeatable cycles.",
-  },
-  {
-    id: "drivetrain",
-    name: "Mecanum Drivetrain",
-    short: "Drivetrain",
-    description: "Four corner-mounted mecanum wheels let the robot drive forward, strafe sideways, and turn with precise control.",
-  },
-  {
-    id: "vision",
-    name: "Limelight Vision",
-    short: "Vision",
-    description: "The forward-facing Limelight camera supplies visual targeting information to support alignment and autonomous routines.",
-  },
-  {
-    id: "endgame",
-    name: "Endgame Arm Assembly",
-    short: "Endgame",
-    description: "The elevated arm assembly gives the robot a dedicated mechanism for the endgame portion of the match.",
+    description: "Intake and transfer move game pieces into the robot.",
   },
 ] as const;
 
@@ -60,40 +54,44 @@ const views: RobotView[] = [
   {
     name: "Intake overview",
     image: frontLeft.url,
-    points: { launcher: { x: 46, y: 48 }, turret: { x: 52, y: 47 }, intake: { x: 37, y: 66 }, drivetrain: { x: 34, y: 48 }, vision: { x: 64, y: 34 }, endgame: { x: 74, y: 19 } },
+    visibleFeatures: ["turret", "ramp", "intake"],
+    points: { turret: { x: 45, y: 48 }, ramp: { x: 32, y: 60 }, intake: { x: 42, y: 56 } },
   },
   {
     name: "Front three-quarter",
     image: frontRight.url,
-    points: { launcher: { x: 52, y: 35 }, turret: { x: 56, y: 45 }, intake: { x: 57, y: 72 }, drivetrain: { x: 31, y: 64 }, vision: { x: 66, y: 54 }, endgame: { x: 69, y: 17 } },
+    visibleFeatures: ["turret", "ramp", "intake"],
+    points: { turret: { x: 50, y: 44 }, ramp: { x: 58, y: 78 }, intake: { x: 55, y: 65 } },
   },
   {
-    name: "Launcher side",
+    name: "Turret side",
     image: sideRight.url,
-    points: { launcher: { x: 48, y: 37 }, turret: { x: 57, y: 43 }, intake: { x: 39, y: 66 }, drivetrain: { x: 67, y: 59 }, vision: { x: 43, y: 51 }, endgame: { x: 77, y: 15 } },
+    visibleFeatures: ["turret", "ramp", "intake"],
+    points: { turret: { x: 47, y: 40 }, ramp: { x: 30, y: 65 }, intake: { x: 38, y: 62 } },
   },
   {
     name: "Intake side",
     image: sideLeft.url,
-    points: { launcher: { x: 47, y: 37 }, turret: { x: 57, y: 46 }, intake: { x: 36, y: 65 }, drivetrain: { x: 69, y: 58 }, vision: { x: 41, y: 48 }, endgame: { x: 77, y: 15 } },
+    visibleFeatures: ["turret", "ramp", "intake"],
+    points: { turret: { x: 47, y: 39 }, ramp: { x: 29, y: 66 }, intake: { x: 36, y: 61 } },
   },
   {
     name: "Rear assembly",
     image: rear.url,
-    visibleFeatures: ["drivetrain", "endgame"],
-    points: { drivetrain: { x: 50, y: 64 }, endgame: { x: 55, y: 24 } },
+    visibleFeatures: ["ramp", "drivetrain"],
+    points: { ramp: { x: 50, y: 42 }, drivetrain: { x: 50, y: 64 } },
   },
   {
     name: "Underside systems",
     image: underside.url,
-    visibleFeatures: ["drivetrain"],
-    points: { drivetrain: { x: 69, y: 65 } },
+    visibleFeatures: ["drivetrain", "butterfly", "intake", "ramp"],
+    points: { drivetrain: { x: 40, y: 46 }, butterfly: { x: 50, y: 55 }, intake: { x: 47, y: 38 }, ramp: { x: 47, y: 30 } },
   },
 ];
 
 export function RobotExplorer() {
   const [viewIndex, setViewIndex] = useState(1);
-  const [selectedId, setSelectedId] = useState<FeatureId>("launcher");
+  const [selectedId, setSelectedId] = useState<FeatureId>("turret");
   const [zoom, setZoom] = useState(1);
   const [drag, setDrag] = useState({ x: 0, y: 0 });
   const gesture = useRef<{ pointerId: number; x: number; y: number; view: number } | null>(null);
