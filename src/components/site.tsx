@@ -84,8 +84,18 @@ function Section({ children, alt, id }: { children: ReactNode; alt?: boolean; id
 
 export function Hero() {
   return (
-    <section className="relative flex min-h-[90vh] items-center justify-center overflow-hidden bg-hero px-4 text-center text-primary-foreground">
-      <div className="absolute inset-0 bg-grid opacity-20" />
+    <section
+      className="relative flex min-h-[90vh] items-center justify-center overflow-hidden bg-hero px-4 text-center text-primary-foreground"
+      onMouseMove={(e) => {
+        const r = e.currentTarget.getBoundingClientRect();
+        e.currentTarget.style.setProperty("--mx", `${((e.clientX - r.left) / r.width - 0.5) * -40}px`);
+        e.currentTarget.style.setProperty("--my", `${((e.clientY - r.top) / r.height - 0.5) * -40}px`);
+        e.currentTarget.style.setProperty("--sx", `${e.clientX - r.left}px`);
+        e.currentTarget.style.setProperty("--sy", `${e.clientY - r.top}px`);
+      }}
+    >
+      <div className="hero-grid absolute -inset-12 bg-grid opacity-20" />
+      <div className="hero-spot pointer-events-none absolute inset-0" />
       <div className="relative">
         <span className="rounded-full bg-primary-foreground/15 px-4 py-1.5 text-sm font-semibold">FTC Robotics Team</span>
         <h1 className="mt-6 font-display text-6xl font-black md:text-8xl">Slingshot</h1>
@@ -205,9 +215,9 @@ export function Outreach() {
 const sponsorBenefits = ["Logo on website", "Logo on social media", "Logo on shirt & displays", "Logo on robot"];
 
 export const sponsorshipTiers = [
-  { name: "Orange", price: "$99–299", benefits: [true, true, false, false] },
-  { name: "Silver", price: "$300–699", benefits: [true, true, true, false] },
-  { name: "Amethyst", price: "$700+", benefits: [true, true, true, true] },
+  { name: "Orange", tone: "tier-orange", price: "$99–299", benefits: [true, true, false, false] },
+  { name: "Silver", tone: "tier-silver", price: "$300–699", benefits: [true, true, true, false] },
+  { name: "Amethyst", tone: "tier-amethyst", price: "$700+", benefits: [true, true, true, true] },
 ] as const;
 
 export function Sponsorship() {
@@ -225,7 +235,7 @@ export function Sponsorship() {
           </thead>
           <tbody>
             {sponsorshipTiers.map((tier) => (
-              <tr key={tier.name} className="border-t border-primary-foreground/15">
+              <tr key={tier.name} className={`border-t border-primary-foreground/15 ${tier.tone}`}>
                 <th scope="row" className="p-6">
                   <span className="font-display text-2xl font-bold">{tier.name}</span>
                   <span className="mt-1 block text-sm font-semibold text-glow">{tier.price}</span>

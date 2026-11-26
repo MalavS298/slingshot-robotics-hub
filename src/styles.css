@@ -210,3 +210,15 @@
     transition: none !important;
   }
 }
+
+.hero-grid {
+  transform: translate(var(--mx, 0px), var(--my, 0px));
+  transition: transform 0.25s ease-out;
+}
+.hero-spot {
+  background: radial-gradient(400px circle at var(--sx, 50%) var(--sy, 50%), color-mix(in oklab, var(--primary-foreground) 14%, transparent), transparent 70%);
+}
+.tier-orange { background: linear-gradient(90deg, oklch(0.68 0.18 50 / 0.55), transparent 75%); }
+.tier-silver { background: linear-gradient(90deg, oklch(0.8 0.01 280 / 0.45), transparent 75%); }
+.tier-amethyst { background: linear-gradient(90deg, oklch(0.6 0.2 305 / 0.6), transparent 75%); }
+@media (prefers-reduced-motion: reduce) { .hero-grid { transform: none; } }
