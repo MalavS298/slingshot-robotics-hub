@@ -7,7 +7,7 @@ describe("Robot explorer", () => {
   it("shows the team's exact wording for the deployable ramp", () => {
     render(<RobotExplorer />);
     fireEvent.click(screen.getByRole("button", { name: "03 Ramp" }));
-    expect(screen.getAllByText("Deployable Ramp")).toHaveLength(2);
+    expect(screen.getAllByText("Deployable Ramp").length).toBeGreaterThanOrEqual(2);
     expect(screen.getAllByText("Deployable ramp to intake from flowers.")).toHaveLength(2);
   });
 

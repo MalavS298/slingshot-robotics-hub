@@ -1,4 +1,4 @@
-import { useRef, useState, type KeyboardEvent, type PointerEvent } from "react";
+import { useEffect, useRef, useState, type KeyboardEvent, type PointerEvent } from "react";
 import { ChevronLeft, ChevronRight, Crosshair, Hand, Minus, Plus, RotateCcw } from "lucide-react";
 
 import frontLeft from "@/assets/robot-front-left.webp.asset.json";
@@ -89,46 +89,72 @@ const views: RobotView[] = [
   },
 ];
 
+const N = views.length;
+const wrap = (v: number) => ((v % N) + N) % N;
+const circDist = (a: number, b: number) => { const d = Math.abs(wrap(a) - wrap(b)); return Math.min(d, N - d); };
+
 export function RobotExplorer() {
-  const [viewIndex, setViewIndex] = useState(1);
+  const [target, setTarget] = useState(1);
+  const [pos, setPos] = useState(1);
   const [selectedId, setSelectedId] = useState<FeatureId>("turret");
   const [zoom, setZoom] = useState(1);
-  const [drag, setDrag] = useState({ x: 0, y: 0 });
-  const gesture = useRef<{ pointerId: number; x: number; y: number; view: number } | null>(null);
+  const [tilt, setTilt] = useState(0);
+  const targetRef = useRef(1);
+  const posRef = useRef(1);
+  const gesture = useRef<{ pointerId: number; x: number; y: number; start: number; lastX: number; lastT: number; v: number } | null>(null);
   const selected = features.find((feature) => feature.id === selectedId) ?? features[0];
+  const viewIndex = wrap(Math.round(target));
   const view = views[viewIndex]!;
 
-  const changeView = (direction: number) => {
-    setViewIndex((current) => (current + direction + views.length) % views.length);
-    setDrag({ x: 0, y: 0 });
-  };
+  useEffect(() => {
+    let raf = 0;
+    let last = performance.now();
+    const tick = (now: number) => {
+      const dt = Math.min(100, now - last);
+      last = now;
+      const diff = targetRef.current - posRef.current;
+      if (Math.abs(diff) < 0.002 && diff !== 0) { posRef.current = targetRef.current; setPos(posRef.current); }
+      else if (diff !== 0) {
+        posRef.current += diff * (1 - Math.exp(-dt / 110));
+        setPos(posRef.current);
+      }
+      raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, []);
 
+  const goTo = (value: number) => { targetRef.current = value; setTarget(value); };
+  const changeView = (direction: number) => goTo(Math.round(targetRef.current) + direction);
   const resetView = () => {
-    setViewIndex(1);
-    setZoom(1);
-    setDrag({ x: 0, y: 0 });
+    const base = Math.round(targetRef.current);
+    goTo(base + ((1 - wrap(base) + N + N / 2) % N) - N / 2);
+    setZoom(1); setTilt(0);
   };
 
   const onPointerDown = (event: PointerEvent<HTMLDivElement>) => {
     if (event.button !== 0) return;
-    gesture.current = { pointerId: event.pointerId, x: event.clientX, y: event.clientY, view: viewIndex };
+    gesture.current = { pointerId: event.pointerId, x: event.clientX, y: event.clientY, start: targetRef.current, lastX: event.clientX, lastT: performance.now(), v: 0 };
     event.currentTarget.setPointerCapture(event.pointerId);
   };
 
   const onPointerMove = (event: PointerEvent<HTMLDivElement>) => {
-    const start = gesture.current;
-    if (!start || start.pointerId !== event.pointerId) return;
-    const dx = event.clientX - start.x;
-    const dy = event.clientY - start.y;
-    const steps = Math.round(-dx / 150);
-    setViewIndex((start.view + steps + views.length * 2) % views.length);
-    setDrag({ x: dx % 150, y: Math.max(-35, Math.min(35, dy)) });
+    const g = gesture.current;
+    if (!g || g.pointerId !== event.pointerId) return;
+    const now = performance.now();
+    const dt = Math.max(1, now - g.lastT);
+    g.v = g.v * 0.6 + (-(event.clientX - g.lastX) / 260 / dt) * 0.4;
+    g.lastX = event.clientX; g.lastT = now;
+    goTo(g.start - (event.clientX - g.x) / 260);
+    setTilt(Math.max(-12, Math.min(12, (event.clientY - g.y) / 8)));
   };
 
   const endDrag = (event: PointerEvent<HTMLDivElement>) => {
-    if (gesture.current?.pointerId === event.pointerId) {
+    const g = gesture.current;
+    if (g?.pointerId === event.pointerId) {
       gesture.current = null;
-      setDrag({ x: 0, y: 0 });
+      goTo(Math.round(targetRef.current + g.v * 220));
+      setTilt(0);
       if (event.currentTarget.hasPointerCapture(event.pointerId)) event.currentTarget.releasePointerCapture(event.pointerId);
     }
   };
@@ -141,8 +167,18 @@ export function RobotExplorer() {
     if (event.key === "0") { event.preventDefault(); resetView(); }
   };
 
+  const markerView = wrap(Math.round(pos));
+  const markerOpacity = Math.max(0, 1 - circDist(pos, markerView) * 3);
+
   return (
     <div className="overflow-hidden rounded-3xl border border-primary/30 bg-popover shadow-2xl shadow-primary/10">
+      <svg width="0" height="0" className="absolute" aria-hidden="true">
+        <filter id="robot-holo">
+          <feColorMatrix type="saturate" values="0" />
+          <feConvolveMatrix order="3" kernelMatrix="-1 -1 -1 -1 8 -1 -1 -1 -1" preserveAlpha="true" />
+          <feComponentTransfer><feFuncR type="linear" slope="3.2" /><feFuncG type="linear" slope="3" /><feFuncB type="linear" slope="3.6" /></feComponentTransfer>
+        </filter>
+      </svg>
       <div className="flex flex-wrap items-center justify-between gap-3 border-b border-primary/20 px-5 py-4 sm:px-7">
         <div className="flex items-center gap-3">
           <span className="h-2 w-2 rounded-full bg-glow shadow-[0_0_16px_var(--glow)]" />
@@ -165,50 +201,62 @@ export function RobotExplorer() {
             onKeyDown={onKeyDown}
           >
             <div className="robot-blueprint absolute inset-0 opacity-30" />
-            <div className="robot-orbit-ring absolute left-1/2 top-[68%] h-32 w-[65%] -translate-x-1/2 rounded-[50%] border border-glow/20" />
+            <div className="robot-particles absolute inset-0" />
             <div className="absolute left-5 top-5 z-20 rounded-full border border-primary/30 bg-background/70 px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.18em] text-glow backdrop-blur sm:left-7 sm:top-7">
-              {String(viewIndex + 1).padStart(2, "0")} / {String(views.length).padStart(2, "0")} · {view.name}
+              {String(viewIndex + 1).padStart(2, "0")} / {String(N).padStart(2, "0")} · {view.name}
             </div>
 
-            <img
-              src={view.image}
-              alt={`Slingshot #20240 robot, ${view.name.toLowerCase()}`}
-              draggable={false}
-              className="pointer-events-none absolute inset-0 h-full w-full object-contain p-12 transition-[filter] duration-300 sm:p-16"
-              style={{
-                transform: `translate(${drag.x * 0.12}px, ${drag.y * 0.25}px) scale(${zoom}) perspective(1200px) rotateY(${drag.x * 0.055}deg) rotateX(${-drag.y * 0.08}deg)`,
-                filter: "drop-shadow(0 28px 28px var(--background)) drop-shadow(0 0 22px color-mix(in oklab, var(--primary) 22%, transparent))",
-              }}
-            />
+            <div className="absolute inset-0" style={{ perspective: "1400px" }}>
+              {views.map((v, i) => {
+                let rel = wrap(pos) - i;
+                if (rel > N / 2) rel -= N;
+                if (rel < -N / 2) rel += N;
+                const opacity = Math.max(0, 1 - Math.abs(rel));
+                const active = i === viewIndex;
+                return (
+                  <img
+                    key={v.name}
+                    src={v.image}
+                    alt={active ? `Slingshot #20240 robot, ${v.name.toLowerCase()}` : ""}
+                    aria-hidden={active ? undefined : true}
+                    draggable={false}
+                    className="robot-holo pointer-events-none absolute inset-0 h-full w-full object-contain p-12 sm:p-16"
+                    style={{
+                      opacity,
+                      visibility: opacity < 0.01 ? "hidden" : "visible",
+                      transform: `scale(${zoom}) rotateY(${-rel * 28}deg) rotateX(${-tilt}deg) translateX(${-rel * 40}px)`,
+                    }}
+                  />
+                );
+              })}
+            </div>
 
-            {features.filter((feature) => !view.visibleFeatures || view.visibleFeatures.includes(feature.id)).map((feature) => {
-              const point = view.points[feature.id];
-              if (!point) return null;
-              const active = feature.id === selectedId;
-              return (
-                <button
-                  key={feature.id}
-                  type="button"
-                  aria-label={`Learn about ${feature.name}`}
-                  aria-pressed={active}
-                  onPointerDown={(event) => event.stopPropagation()}
-                  onClick={() => setSelectedId(feature.id)}
-                  className={`group absolute z-20 -translate-x-1/2 -translate-y-1/2 rounded-full outline-none transition-transform hover:scale-110 focus-visible:ring-2 focus-visible:ring-glow ${active ? "scale-110" : ""}`}
-                  style={{ left: `${point.x}%`, top: `${point.y}%` }}
-                >
-                  <span className={`relative flex h-7 w-7 items-center justify-center rounded-full border font-mono text-[10px] font-bold transition-colors sm:h-8 sm:w-8 ${active ? "border-glow bg-glow text-accent-foreground shadow-[0_0_24px_var(--glow)]" : "border-glow/60 bg-background/85 text-glow backdrop-blur group-hover:bg-primary"}`}>
-                    {String(features.indexOf(feature) + 1).padStart(2, "0")}
-                    {!active && <span className="absolute inset-0 -z-10 animate-ping rounded-full border border-glow/30 [animation-duration:2.5s]" />}
-                  </span>
-                  <span className={`absolute left-1/2 top-full mt-2 -translate-x-1/2 whitespace-nowrap rounded-full border px-3 py-1 font-mono text-[9px] uppercase tracking-[0.14em] backdrop-blur transition-opacity sm:text-[10px] ${active ? "border-glow/50 bg-primary text-primary-foreground opacity-100" : "border-primary/20 bg-background/80 text-muted-foreground opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100"}`}>
-                    {feature.short}
-                  </span>
-                </button>
-              );
-            })}
+            <div className="absolute inset-0 z-30" style={{ opacity: markerOpacity, transition: "opacity 120ms" }}>
+              {features.map((feature) => {
+                const point = views[markerView]!.points[feature.id];
+                if (!point) return null;
+                const active = feature.id === selectedId;
+                const num = String(features.indexOf(feature) + 1).padStart(2, "0");
+                return (
+                  <button
+                    key={feature.id}
+                    type="button"
+                    aria-label={`Learn about ${feature.name}`}
+                    aria-pressed={active}
+                    tabIndex={markerOpacity > 0.5 ? 0 : -1}
+                    onPointerDown={(event) => event.stopPropagation()}
+                    onClick={() => setSelectedId(feature.id)}
+                    className={`absolute z-20 -translate-x-1/2 -translate-y-1/2 whitespace-nowrap rounded-full border px-3 py-1.5 font-mono text-[9px] font-semibold uppercase tracking-[0.14em] backdrop-blur transition-all duration-300 hover:scale-105 focus-visible:ring-2 focus-visible:ring-glow sm:text-[10px] ${active ? "border-glow bg-primary text-primary-foreground shadow-[0_0_24px_var(--glow)]" : "border-primary/40 bg-background/80 text-foreground/85 hover:border-glow"}`}
+                    style={{ left: `${point.x}%`, top: `${point.y}%`, pointerEvents: markerOpacity > 0.5 ? "auto" : "none" }}
+                  >
+                    <span className={active ? "text-accent" : "text-glow"}>{num}</span> {feature.name}
+                  </button>
+                );
+              })}
+            </div>
 
             <div className="absolute bottom-5 left-1/2 z-20 flex -translate-x-1/2 items-center gap-2 whitespace-nowrap rounded-full border border-primary/20 bg-background/70 px-4 py-2 font-mono text-[9px] uppercase tracking-[0.18em] text-muted-foreground backdrop-blur sm:bottom-7 sm:text-[10px]">
-              <Hand className="h-3.5 w-3.5 text-glow" /> Drag to orbit <span className="text-glow">·</span> Select a marker
+              <Hand className="h-3.5 w-3.5 text-glow" /> Drag to orbit <span className="text-glow">·</span> Select a label
             </div>
           </div>
 

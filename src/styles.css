@@ -197,6 +197,19 @@
   mask-image: radial-gradient(circle at center, var(--foreground), transparent 76%);
 }
 
+.robot-holo {
+  filter: url(#robot-holo) drop-shadow(0 0 10px color-mix(in oklab, var(--glow) 45%, transparent));
+  mix-blend-mode: screen;
+  will-change: transform, opacity;
+}
+
+.robot-particles {
+  background-image: radial-gradient(color-mix(in oklab, var(--glow) 55%, transparent) 1px, transparent 1.5px);
+  background-size: 7px 7px;
+  mask-image: radial-gradient(ellipse at 50% 50%, var(--foreground), transparent 55%);
+  opacity: 0.25;
+}
+
 .robot-orbit-ring {
   box-shadow: 0 0 70px color-mix(in oklab, var(--primary) 20%, transparent);
   transform: translateX(-50%) rotateX(68deg);
