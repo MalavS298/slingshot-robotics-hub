@@ -55,37 +55,37 @@ const views: RobotView[] = [
     name: "Intake overview",
     image: frontLeft.url,
     visibleFeatures: ["turret", "ramp", "intake"],
-    points: { turret: { x: 45, y: 48 }, ramp: { x: 32, y: 60 }, intake: { x: 42, y: 56 } },
+    points: { turret: { x: 45, y: 42 }, ramp: { x: 30, y: 62 }, intake: { x: 44, y: 54 }, drivetrain: { x: 62, y: 72 }, butterfly: { x: 52, y: 82 } },
   },
   {
     name: "Front three-quarter",
     image: frontRight.url,
     visibleFeatures: ["turret", "ramp", "intake"],
-    points: { turret: { x: 50, y: 44 }, ramp: { x: 58, y: 78 }, intake: { x: 55, y: 65 } },
+    points: { turret: { x: 50, y: 42 }, ramp: { x: 60, y: 78 }, intake: { x: 55, y: 64 }, drivetrain: { x: 30, y: 70 }, butterfly: { x: 42, y: 86 } },
   },
   {
     name: "Turret side",
     image: sideRight.url,
     visibleFeatures: ["turret", "ramp", "intake"],
-    points: { turret: { x: 47, y: 40 }, ramp: { x: 30, y: 65 }, intake: { x: 38, y: 62 } },
+    points: { turret: { x: 47, y: 40 }, ramp: { x: 28, y: 68 }, intake: { x: 38, y: 60 }, drivetrain: { x: 64, y: 72 }, butterfly: { x: 50, y: 84 } },
   },
   {
     name: "Intake side",
     image: sideLeft.url,
     visibleFeatures: ["turret", "ramp", "intake"],
-    points: { turret: { x: 47, y: 39 }, ramp: { x: 29, y: 66 }, intake: { x: 36, y: 61 } },
+    points: { turret: { x: 47, y: 39 }, ramp: { x: 27, y: 68 }, intake: { x: 37, y: 59 }, drivetrain: { x: 64, y: 72 }, butterfly: { x: 50, y: 84 } },
   },
   {
     name: "Rear assembly",
     image: rear.url,
     visibleFeatures: ["ramp", "drivetrain"],
-    points: { ramp: { x: 50, y: 42 }, drivetrain: { x: 50, y: 64 } },
+    points: { turret: { x: 50, y: 26 }, ramp: { x: 50, y: 42 }, intake: { x: 34, y: 52 }, drivetrain: { x: 50, y: 66 }, butterfly: { x: 66, y: 80 } },
   },
   {
     name: "Underside systems",
     image: underside.url,
     visibleFeatures: ["drivetrain", "butterfly", "intake", "ramp"],
-    points: { drivetrain: { x: 40, y: 46 }, butterfly: { x: 50, y: 55 }, intake: { x: 47, y: 38 }, ramp: { x: 47, y: 30 } },
+    points: { turret: { x: 60, y: 22 }, ramp: { x: 47, y: 30 }, intake: { x: 47, y: 38 }, drivetrain: { x: 34, y: 48 }, butterfly: { x: 56, y: 58 } },
   },
 ];
 
