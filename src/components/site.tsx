@@ -147,31 +147,10 @@ export function About() {
   );
 }
 
-function RobotCard({ season, desc, size, weight, features }: { season: string; desc: string; size: string; weight: string; features: string[] }) {
-  return (
-    <div className="grid gap-8 md:grid-cols-2">
-      <div className="rounded-2xl bg-card p-6 shadow-md">
-        <div className="flex aspect-square items-center justify-center rounded-xl bg-muted text-muted-foreground">Robot photo</div>
-      </div>
-      <div className="flex flex-col justify-center gap-5">
-        <div className="rounded-2xl bg-card p-6 shadow-md"><h3 className="font-display text-xl font-bold">Season {season}</h3><p className="mt-2">{desc}</p></div>
-        <div className="grid grid-cols-2 gap-5">
-          <div className="rounded-2xl bg-card p-6 text-center shadow-md"><p className="font-display text-3xl font-bold text-glow">{size}</p><p className="text-sm">Max Size</p></div>
-          <div className="rounded-2xl bg-card p-6 text-center shadow-md"><p className="font-display text-3xl font-bold text-glow">{weight}</p><p className="text-sm">Weight</p></div>
-        </div>
-        <div className="rounded-2xl bg-primary p-6 text-primary-foreground shadow-md">
-          <h4 className="font-display text-xl font-bold">Key Features</h4>
-          <ul className="mt-3 space-y-2">{features.map((f) => <li key={f}>• {f}</li>)}</ul>
-        </div>
-      </div>
-    </div>
-  );
-}
-
 export function Robot() {
   return (
     <Section id="robot">
-      <SectionHead eyebrow="Inside the machine" title="Meet Our Robot" sub="Explore our DECODE competition robot. Drag the assembly to see every angle, then select a marker to discover its systems." />
+      <SectionHead eyebrow="Inside the machine" title="Meet Our Robot" sub="BIOBUZZ · 2026–2027 Season" />
       <RobotExplorer />
     </Section>
   );
@@ -180,8 +159,8 @@ export function Robot() {
 export function PastSeasons() {
   return (
     <Section alt>
-      <SectionHead title="Past" accent="Seasons" sub="A look back at our previous competition seasons and the robots we've built." />
-      <RobotCard season="2024-2025" desc="In INTO THE DEEP, we hung specimens and dropped samples into the dedicated baskets." size={'18"'} weight="34 lbs" features={["Scoring samples in the high basket", "Hanging specimens on the rung", "End game hang", "Strong autonomous programming"]} />
+      <SectionHead title="Past" accent="Seasons" sub="DECODE · 2025–2026 Season" />
+      <RobotExplorer robot="decode" />
     </Section>
   );
 }
@@ -256,22 +235,23 @@ export function Sponsorship() {
 }
 
 export const teamMembers = [
-  { name: "Saanvi", category: "Hardware", photo: saanviPhoto.url, x: 170, y: 100, labelSide: "left" },
-  { name: "Anaisha", category: "Hardware", photo: anaishaPhoto.url, x: 230, y: 200, labelSide: "left" },
-  { name: "Nihal", category: "Hardware", photo: nihalPhoto.url, x: 290, y: 300, labelSide: "left" },
-  { name: "Saatvik", category: "Hardware", photo: saatvikPhoto.url, x: 350, y: 400, labelSide: "left" },
-  { name: "Sai", category: "Hardware", photo: saiPhoto.url, x: 410, y: 500, labelSide: "left" },
-  { name: "Pranay", category: "Hardware", photo: pranayPhoto.url, x: 460, y: 600, labelSide: "left" },
-  { name: "Eshaann", category: "Software", photo: eshaannPhoto.url, x: 830, y: 100, labelSide: "right" },
-  { name: "Malav", category: "Software", photo: malavPhoto.url, x: 770, y: 200, labelSide: "right" },
-  { name: "Benoit", category: "Software", photo: benoitPhoto.url, x: 710, y: 300, labelSide: "right" },
-  { name: "Taheem", category: "Software", photo: taheemPhoto.url, x: 650, y: 400, labelSide: "right" },
-  { name: "Tarun", category: "Software", photo: tarunPhoto.url, x: 590, y: 500, labelSide: "right" },
-  { name: "Kevin", category: "Software", photo: kevinPhoto.url, x: 540, y: 600, labelSide: "right" },
-  { name: "Evan", category: "Outreach", photo: evanPhoto.url, x: 500, y: 740, labelSide: "right" },
-  { name: "Ethan", category: "Outreach", photo: ethanPhoto.url, x: 500, y: 900, labelSide: "left" },
-  { name: "Daiwik", category: "Outreach", photo: daiwikPhoto.url, x: 500, y: 1060, labelSide: "right" },
-  { name: "Srivanth", category: "Outreach", photo: srivanthPhoto.url, x: 500, y: 1220, labelSide: "left" },
+  { name: "Saanvi", category: "Hardware", photo: saanviPhoto.url, x: 200, y: 100, labelSide: "left" },
+  { name: "Anaisha", category: "Hardware", photo: anaishaPhoto.url, x: 245, y: 255, labelSide: "left" },
+  { name: "Nihal", category: "Hardware", photo: nihalPhoto.url, x: 290, y: 410, labelSide: "left" },
+  { name: "Saatvik", category: "Hardware", photo: saatvikPhoto.url, x: 335, y: 565, labelSide: "left" },
+  { name: "Kevin", category: "Hardware", photo: kevinPhoto.url, x: 380, y: 720, labelSide: "left" },
+  { name: "Pranay", category: "Hardware", photo: pranayPhoto.url, x: 425, y: 875, labelSide: "left" },
+  { name: "Srivanth", category: "Hardware", photo: srivanthPhoto.url, x: 470, y: 1030, labelSide: "left" },
+  { name: "Eshaann", category: "Software", photo: eshaannPhoto.url, x: 1000, y: 100, labelSide: "right" },
+  { name: "Malav", category: "Software", photo: malavPhoto.url, x: 928, y: 286, labelSide: "right" },
+  { name: "Benoit", category: "Software", photo: benoitPhoto.url, x: 856, y: 472, labelSide: "right" },
+  { name: "Taheem", category: "Software", photo: taheemPhoto.url, x: 784, y: 658, labelSide: "right" },
+  { name: "Tarun", category: "Software", photo: tarunPhoto.url, x: 712, y: 844, labelSide: "right" },
+  { name: "Sai", category: "Software", photo: saiPhoto.url, x: 640, y: 1030, labelSide: "right" },
+  { name: "Evan", category: "Outreach", photo: evanPhoto.url, x: 555, y: 1270, labelSide: "right" },
+  { name: "Ethan", category: "Outreach", photo: ethanPhoto.url, x: 555, y: 1480, labelSide: "left" },
+  { name: "Daiwik", category: "Outreach", photo: daiwikPhoto.url, x: 555, y: 1690, labelSide: "right" },
+
 ] as const;
 
 export function Team() {
@@ -282,15 +262,15 @@ export function Team() {
         <h2 className="font-display text-4xl font-bold md:text-5xl">Meet the <span className="text-glow">Team</span></h2>
       </div>
 
-      <div className="mx-auto hidden w-full max-w-5xl md:block">
-        <svg viewBox="-10 0 1020 1320" className="h-auto w-full" role="img" aria-labelledby="team-shape-title team-shape-description">
+      <div className="mx-auto hidden w-full max-w-6xl md:block">
+        <svg viewBox="0 0 1200 1800" className="h-auto w-full" role="img" aria-labelledby="team-shape-title team-shape-description">
           <title id="team-shape-title">Slingshot #20240 team members</title>
           <desc id="team-shape-description">Hardware and Software members form the two arms of a slingshot, with Outreach members along its handle.</desc>
           <defs>
             <clipPath id="team-portrait-clip" clipPathUnits="userSpaceOnUse"><circle r="62" /></clipPath>
           </defs>
           <path
-            d="M170 100 L460 600 L500 670 L540 600 L830 100 M500 670 L500 1220"
+            d="M200 100 L470 1030 L555 1140 L640 1030 L1000 100 M555 1140 L555 1690"
             fill="none"
             stroke="var(--primary)"
             strokeWidth="10"
@@ -298,8 +278,8 @@ export function Team() {
             strokeLinejoin="round"
             opacity="0.55"
           />
-          <text x="500" y="300" textAnchor="middle" className="fill-foreground font-display text-[42px] font-black tracking-wide">SLINGSHOT</text>
-          <text x="500" y="340" textAnchor="middle" className="fill-glow font-display text-[22px] font-bold">#20240</text>
+          <text x="600" y="390" textAnchor="middle" className="fill-foreground font-display text-[42px] font-black tracking-wide">SLINGSHOT</text>
+          <text x="600" y="440" textAnchor="middle" className="fill-glow font-display text-[22px] font-bold">#20240</text>
           {teamMembers.map((member) => {
             const labelX = member.labelSide === "left" ? -84 : 84;
             const labelAnchor = member.labelSide === "left" ? "end" : "start";

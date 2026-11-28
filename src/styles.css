@@ -235,3 +235,5 @@
 .tier-silver { background: linear-gradient(90deg, oklch(0.8 0.01 280 / 0.45), transparent 75%); }
 .tier-amethyst { background: linear-gradient(90deg, oklch(0.6 0.2 305 / 0.6), transparent 75%); }
 @media (prefers-reduced-motion: reduce) { .hero-grid { transform: none; } }
+
+.robot-assembly { transition: transform 180ms ease-out; will-change: transform; }

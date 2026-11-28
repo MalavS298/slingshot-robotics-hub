@@ -5,10 +5,13 @@ import { sponsorshipTiers, teamMembers } from "@/components/site";
 describe("Team members", () => {
   it("lists all 16 members with only their assigned team category", () => {
     expect(teamMembers).toHaveLength(16);
-    expect(teamMembers.filter((member) => member.category === "Hardware").map((member) => member.name)).toMatchObject(["Saanvi", "Anaisha", "Nihal", "Saatvik", "Sai", "Pranay"]);
-    expect(teamMembers.filter((member) => member.category === "Software").map((member) => member.name)).toMatchObject(["Eshaann", "Malav", "Benoit", "Taheem", "Tarun", "Kevin"]);
-    expect(teamMembers.filter((member) => member.category === "Outreach").map((member) => member.name)).toMatchObject(["Evan", "Ethan", "Daiwik", "Srivanth"]);
+    expect(teamMembers.filter((member) => member.category === "Hardware").map((member) => member.name)).toEqual(["Saanvi", "Anaisha", "Nihal", "Saatvik", "Kevin", "Pranay", "Srivanth"]);
+    expect(teamMembers.filter((member) => member.category === "Software").map((member) => member.name)).toEqual(["Eshaann", "Malav", "Benoit", "Taheem", "Tarun", "Sai"]);
+    expect(teamMembers.filter((member) => member.category === "Outreach").map((member) => member.name)).toEqual(["Evan", "Ethan", "Daiwik"]);
     expect(teamMembers.every((member) => !("bio" in member))).toBe(true);
+  });
+  it.each([["Sai", "Software"], ["Kevin", "Hardware"], ["Srivanth", "Hardware"]])("assigns %s to %s", (name, category) => {
+    expect(teamMembers.find((member) => member.name === name)?.category).toBe(category);
   });
 });
 

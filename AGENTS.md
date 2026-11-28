@@ -28,3 +28,5 @@ use the editor.
   own key and store it in Secrets.
 - **Secrets.** Lovable manages them. Do not put secret values in the repo.
 <!-- LOVABLE:END -->
+
+- Keep current and past robots in one configurable, single-image explorer with shared pan, zoom, and callout behavior so both sections stay consistent.
